@@ -1,19 +1,16 @@
-package src;
-
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
 public class Main {
     public static void main(String[] args) {
-        int numero = 10;
-        int multiplicacion = numero * 2;
-        ArrayList<String> Cosas = new ArrayList<>();
-        Cosas.add("Palo");
-        Cosas.add("Cama");
-        // Cosas.remove(1);
-        Collections.sort(Cosas);
-        System.out.println(Cosas);
+        ArrayList<Product> products = new ArrayList<>();
+        Product teclado = new Product(1, "Teclado", 100, 1000);
+        Product mouse = new Product(1, "Mouse", 100, 1000);
+        products.add(teclado);
+        products.add(mouse);
+        System.out.println(products.size());
 
+        for (Product product : products) {
+            System.out.println(product.name);
+        }
     }
 }
