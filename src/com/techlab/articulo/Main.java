@@ -30,6 +30,189 @@ public class Main {
 
     }
 
+    public static void createArticle(Scanner scanner, ArrayList<Article> articles, ArrayList<Category> categories) {
+        int code;
+        String name;
+        double price;
+        int warrantyMonths;
+        int expDays;
+        Category selectedCategory;
+        boolean existCode = false;
+        boolean validName = false;
+        boolean validPrice = false;
+        boolean validWarrantyMonths = false;
+        boolean validExpDays = false;
+        boolean validCategory = false;
+
+        System.out.println("1) Ingresar Articulo electrónico");
+        System.out.println("2) Ingresar Articulo alimenticio");
+        System.out.println("Seleccione un tipo de articulo:");
+        int articleType = scanner.nextInt();
+        scanner.nextLine();
+
+        do {
+
+            System.out.println("====================");
+            System.out.println("Ingrese el código del articulo :");
+            System.out.println("====================");
+
+            while (!scanner.hasNextInt()) {
+                System.out.println("Ingrese un código válido:");
+                scanner.nextLine();
+            }
+            code = scanner.nextInt();
+            scanner.nextLine();
+            existCode = false;
+
+            for (Article article : articles) {
+                if (article.getCode() == code) {
+                    System.out.println("El código ingresado ya existe");
+                    existCode = true;
+                    break;
+                }
+            }
+
+        } while (existCode);
+
+        do {
+            validName = false;
+            System.out.println("====================");
+            System.out.println("Ingrese el nombre del articulo :");
+            System.out.println("====================");
+            name = scanner.nextLine();
+            validName = name.length() > 0;
+            if (validName == false) {
+                System.out.println("Ingrese un nombre valido");
+                continue;
+            }
+        } while (!validName);
+
+        do {
+            validPrice = false;
+            System.out.println("====================");
+            System.out.println("Ingrese el precio del articulo :");
+            System.out.println("====================");
+
+            while (!scanner.hasNextInt()) {
+                System.out.println("Ingrese un numero válido:");
+                scanner.nextLine();
+            }
+
+            price = scanner.nextDouble();
+            scanner.nextLine();
+            validPrice = price > 0;
+
+            if (validPrice == false) {
+                System.out.println("Ingrese un precio valido");
+                break;
+            }
+        } while (!validPrice);
+
+        if (articleType == 1) {
+            do {
+                validWarrantyMonths = false;
+                System.out.println("====================");
+                System.out.println("Ingrese la garantía en meses del articulo :");
+                System.out.println("====================");
+
+                while (!scanner.hasNextInt()) {
+                    System.out.println("Ingrese un numero válido:");
+                    scanner.nextLine();
+                }
+
+                warrantyMonths = scanner.nextInt();
+                scanner.nextLine();
+                validWarrantyMonths = warrantyMonths > 0;
+                if (validWarrantyMonths == false) {
+                    System.out.println("Ingrese una cantidad de meses valida");
+                    break;
+                }
+            } while (!validWarrantyMonths);
+
+            do {
+                validCategory = false;
+                System.out.println("Categorías disponibles:");
+                for (Category category : categories) {
+                    System.out.println(
+                            category.getCode() + ") " + category.getName());
+                }
+                System.out.println("Seleccione el código de la categoría:");
+                int categoryCode = scanner.nextInt();
+                scanner.nextLine();
+                selectedCategory = null;
+                for (Category category : categories) {
+                    if (category.getCode() == categoryCode) {
+                        selectedCategory = category;
+                        validCategory = category.getCode() == categoryCode;
+                    }
+                }
+                if (validCategory == false) {
+                    System.out.println("Categoría seleccionada invalida");
+                    break;
+                }
+
+            } while (!validCategory);
+
+            ElectronicArticle article = new ElectronicArticle(
+                    code, name, price, selectedCategory, warrantyMonths);
+            articles.add(article);
+            System.out.println("====================");
+            System.out.println("¡Articulo creado con éxito!");
+            System.out.println("====================");
+            System.out.println("Resumen del articulo creado: ");
+            System.out.println(article.toString());
+        }
+
+        if (articleType == 2) {
+            do {
+                validExpDays = false;
+                System.out.println("====================");
+                System.out.println("Ingrese los dia para el vencimiento del articulo :");
+                System.out.println("====================");
+                expDays = scanner.nextInt();
+                scanner.nextLine();
+                validExpDays = expDays > 0;
+                if (validExpDays == false) {
+                    System.out.println("Ingrese una cantidad de días valida");
+                    continue;
+                }
+            } while (!validExpDays);
+
+            do {
+                validCategory = false;
+                System.out.println("Categorías disponibles:");
+                for (Category category : categories) {
+                    System.out.println(
+                            category.getCode() + ") " + category.getName());
+                }
+                System.out.println("Seleccione el código de la categoría:");
+                int categoryCode = scanner.nextInt();
+                scanner.nextLine();
+                selectedCategory = null;
+                for (Category category : categories) {
+                    if (category.getCode() == categoryCode) {
+                        selectedCategory = category;
+                        validCategory = category.getCode() == categoryCode;
+                    }
+                }
+                if (validCategory == false) {
+                    System.out.println("Categoría seleccionada invalida");
+                    continue;
+                }
+
+            } while (!validCategory);
+
+            FoodArticle article = new FoodArticle(code, name, price, selectedCategory, expDays);
+            articles.add(article);
+            System.out.println("====================");
+            System.out.println("¡Articulo creado con éxito!");
+            System.out.println("====================");
+            System.out.println("Resumen del articulo creado: ");
+            System.out.println(article.toString());
+        }
+
+    }
+
     public static void articlesList(ArrayList<Article> articles) {
         if (articles.size() == 0) {
             System.out.println("No hay artículos cargados");
@@ -96,7 +279,7 @@ public class Main {
 
                 article.setName(newName);
                 article.setPrice(newPrice);
-                // ?????? creo nueva categoría o modifico la categoría existente ????????? next
+                // ?????? creo nueva categoría o modifico la categoría existente ?????? go next
                 // category.setName(null);(newCategory);
                 System.out.println("Artículo modificado con éxito");
                 return;
@@ -131,105 +314,49 @@ public class Main {
         }
     }
 
+    public static void menu(Scanner scanner, int option) {
+        System.out.println("====================");
+        System.out.println("SISTEMA DE ARTÍCULOS");
+        System.out.println("====================");
+        System.out.println("1) Ingresar Articulo");
+        System.out.println("2) Listar Articulo");
+        System.out.println("3) Consultar Articulo");
+        System.out.println("4) Modificar Articulo");
+        System.out.println("5) Eliminar Articulo");
+        System.out.println("6) Listar Categorías");
+        System.out.println("0) Salir");
+        System.out.println("====================");
+        System.out.println("Seleccione una opción");
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         ArrayList<Article> articles = new ArrayList<>();
         ArrayList<Category> categories = new ArrayList<>();
         preloadCategories(categories);
         preloadArticles(articles, categories);
-        int option = 0;
+        int option = -1;
         do {
-            System.out.println("====================");
-            System.out.println("SISTEMA DE ARTÍCULOS");
-            System.out.println("====================");
-            System.out.println("1) Ingresar Articulo");
-            System.out.println("2) Listar Articulo");
-            System.out.println("3) Consultar Articulo");
-            System.out.println("4) Modificar Articulo");
-            System.out.println("5) Eliminar Articulo");
-            System.out.println("6) Listar Categorías");
-            System.out.println("0) Salir");
-            System.out.println("====================");
-            System.out.println("Seleccione una opción");
+            menu(scanner, option);
 
-            if (scanner.hasNextInt()) {
-                option = scanner.nextInt();
-            } else {
-                System.out.println("Debe ingresar un número");
+            if (!scanner.hasNextInt()) {
+                System.out.println("La opción elegida no es valida");
                 scanner.next();
+                continue;
+            }
+            option = scanner.nextInt();
+            scanner.nextLine();
+
+            if (option < 0 || option > 6) {
+                System.out.println("La opción elegida no es válida");
                 continue;
             }
 
             switch (option) {
                 case 1:
-                    System.out.println("1) Ingresar Articulo electrónico");
-                    System.out.println("2) Ingresar Articulo alimenticio");
-                    System.out.println("Seleccione un tipo de articulo:");
-
-                    int articleType = scanner.nextInt();
-                    if (articleType == 1) {
-                        System.out.println("====================");
-                        System.out.println("Ingrese el código del articulo electrónico:");
-                        System.out.println("====================");
-
-                        int code = scanner.nextInt();
-                        scanner.nextLine();
-                        System.out.println("====================");
-                        System.out.println("Ingrese el nombre del articulo electrónico:");
-                        System.out.println("====================");
-
-                        String name = scanner.nextLine();
-
-                        System.out.println("====================");
-                        System.out.println("Ingrese el precio del articulo electrónico:");
-                        System.out.println("====================");
-                        double price = scanner.nextDouble();
-
-                        System.out.println("====================");
-                        System.out.println("Ingrese la garantía en meses del articulo electrónico:");
-                        System.out.println("====================");
-                        int warrantyMonth = scanner.nextInt();
-
-                        System.out.println("Categorías disponibles:");
-
-                        for (Category category : categories) {
-                            System.out.println(
-                                    category.getCode() + ") " + category.getName());
-                        }
-
-                        System.out.println("Seleccione el código de la categoría:");
-                        int categoryCode = scanner.nextInt();
-
-                        Category selectedCategory = null;
-
-                        for (Category category : categories) {
-                            if (category.getCode() == categoryCode) {
-                                selectedCategory = category;
-                                break;
-                            }
-                        }
-
-                        if (selectedCategory == null) {
-                            System.out.println("Categoría no válida");
-                        } else {
-                            ElectronicArticle article = new ElectronicArticle(
-                                    code, name, price, selectedCategory, warrantyMonth);
-                            articles.add(article);
-
-                            System.out.println("====================");
-                            System.out.println("¡Articulo creado con éxito!");
-                            System.out.println("====================");
-                            System.out.println(article.toString());
-                        }
-
-                    }
-                    if (articleType == 2) {
-                        System.out.println("Ingrese el código del articulo alimenticio:");
-                    }
-
+                    createArticle(scanner, articles, categories);
                     break;
                 case 2:
-                    System.out.println(option);
                     articlesList(articles);
                     System.out.println("");
 

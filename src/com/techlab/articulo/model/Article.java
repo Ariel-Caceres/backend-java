@@ -51,11 +51,12 @@ public abstract class Article {
 
     @Override
     public String toString() {
-        return "Código: " + code
-                + ", Nombre: " + name
-                + ", Precio: " + price
-                + ", Categoría: " + category.getName()
-                + ", Tipo: " + getArticleType()
-                + ", Detalle: " + getSpecificDetail();
+        return "\n" + "Articulo: {" + "\n" +
+                "Código: " + code + ",\n"
+                + "Nombre: " + name + ",\n"
+                + "Precio: " + price + ",\n"
+                + "Categoría: " + category.getName() + ",\n"
+                + "Tipo: " + getArticleType() + ",\n"
+                + "Detalle: " + getSpecificDetail() + "\n" + "}";
     }
 }

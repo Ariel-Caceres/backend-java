@@ -33,6 +33,6 @@ public class ElectronicArticle extends Article {
 
     @Override
     public String toString() {
-        return super.toString() + "[Subtipo  Electrónico]";
+        return super.toString() + ", [Subtipo  Electrónico]";
     }
 }
