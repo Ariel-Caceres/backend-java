@@ -36,6 +36,7 @@ public class Main {
         double price;
         int warrantyMonths;
         int expDays;
+        int articleType = 10;
         Category selectedCategory;
         boolean existCode = false;
         boolean validName = false;
@@ -43,12 +44,33 @@ public class Main {
         boolean validWarrantyMonths = false;
         boolean validExpDays = false;
         boolean validCategory = false;
+        boolean validOptionTpe = false;
 
-        System.out.println("1) Ingresar Articulo electrónico");
-        System.out.println("2) Ingresar Articulo alimenticio");
-        System.out.println("Seleccione un tipo de articulo:");
-        int articleType = scanner.nextInt();
-        scanner.nextLine();
+        do {
+            validOptionTpe = false;
+            System.out.println("1) Ingresar Articulo electrónico");
+            System.out.println("2) Ingresar Articulo alimenticio");
+            System.out.println("Seleccione un tipo de articulo:");
+
+            if (!scanner.hasNextInt()) {
+                System.out.println("Seleccione un numero valido:");
+                scanner.nextLine();
+                continue;
+            }
+
+            int isANumber = scanner.nextInt();
+
+            if (isANumber < 0 || isANumber > 2) {
+                System.out.println("Seleccione una opción valida:");
+                scanner.nextLine();
+                continue;
+            }
+            validOptionTpe = true;
+
+            articleType = isANumber;
+            scanner.nextLine();
+
+        } while (!validOptionTpe);
 
         do {
 
